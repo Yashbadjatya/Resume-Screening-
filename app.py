@@ -3,12 +3,13 @@ import pickle
 import re
 import nltk
 
+# Download NLTK data
 nltk.download('punkt')
 nltk.download('stopwords')
 
-#loading models
-#clf = pickle.load(open('clf.pkl','rb'))
-tfidfd = pickle.load(open('tfidf.pkl','rb'))
+# Loading models
+# clf = pickle.load(open('clf.pkl','rb'))
+# tfidfd = pickle.load(open('tfidf.pkl','rb'))
 
 def clean_resume(resume_text):
     clean_text = re.sub('http\S+\s*', ' ', resume_text)
@@ -19,7 +20,8 @@ def clean_resume(resume_text):
     clean_text = re.sub(r'[^\x00-\x7f]', r' ', clean_text)
     clean_text = re.sub('\s+', ' ', clean_text)
     return clean_text
-# web app
+
+# Web app
 def main():
     st.title("Resume Screening App")
     uploaded_file = st.file_uploader('Upload Resume', type=['txt','pdf'])
@@ -33,9 +35,9 @@ def main():
             resume_text = resume_bytes.decode('latin-1')
 
         cleaned_resume = clean_resume(resume_text)
-        input_features = tfidfd.transform([cleaned_resume])
-        prediction_id = clf.predict(input_features)[0]
-        st.write(prediction_id)
+        # input_features = tfidfd.transform([cleaned_resume])
+        # prediction_id = clf.predict(input_features)[0]
+        # st.write(prediction_id)
 
         # Map category ID to category name
         category_mapping = {
@@ -66,12 +68,12 @@ def main():
             0: "Advocate",
         }
 
+        # prediction_id = 1  # Assuming a prediction for testing
+        prediction_id = 20  # Example prediction (replace with actual model prediction)
         category_name = category_mapping.get(prediction_id, "Unknown")
 
         st.write("Predicted Category:", category_name)
 
-
-
-# python main
+# Python main
 if __name__ == "__main__":
     main()
